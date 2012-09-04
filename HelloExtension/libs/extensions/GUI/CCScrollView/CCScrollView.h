@@ -41,6 +41,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
+
 typedef enum {
     CCScrollViewDirectionHorizontal = 0,
     CCScrollViewDirectionVertical,

@@ -435,3 +435,9 @@ gl.DST_COLOR                    = 0x0306;
 gl.ONE_MINUS_DST_COLOR          = 0x0307;
 gl.SRC_ALPHA_SATURATE           = 0x0308;
 
+// extensions
+cc.ScrollViewDirectionHorizontal = 0;
+cc.ScrollViewDirectionVertical   = 1;
+cc.ScrollViewDirectionBoth       = 2;
+
+

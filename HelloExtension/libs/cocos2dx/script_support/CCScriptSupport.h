@@ -183,6 +183,7 @@ public:
      */
     virtual int executeFunctionByHandler(int nHandler, int numArgs = 0) = 0;
     
+    virtual int executeFunctionWithNativeObjectData(int nHandler, const char *name, CCNode *obj, CCNode *self) = 0;
     virtual int executeFunctionWithIntegerData(int nHandler, int data, CCNode *self) = 0;
     virtual int executeTouchesEvent(int nHandler, int eventType, CCSet *pTouches, CCNode *self) = 0;
     virtual int executeFunctionWithFloatData(int nHandler, float data, CCNode *self) = 0;

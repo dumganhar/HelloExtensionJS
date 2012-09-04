@@ -37,6 +37,7 @@
 #include "CCDirector.h"
 #include "kazmath/GL/matrix.h"
 #include "touch_dispatcher/CCTouch.h"
+#include "script_support/CCScriptSupport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -222,7 +223,19 @@ void CCScrollView::setContentOffset(CCPoint offset, bool animated/* = false*/)
 
         if (m_pDelegate != NULL)
         {
-            m_pDelegate->scrollViewDidScroll(this);   
+            CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
+            if (pEngine && kScriptTypeJavascript == pEngine->getScriptType())
+            {
+                CCNode* pNode = dynamic_cast<CCNode*>(m_pDelegate);
+                if (pNode)
+                {
+                    pEngine->executeFunctionWithNativeObjectData(1, "onScrollViewDidScroll", this, pNode);
+                }
+            }
+            else
+            {
+                m_pDelegate->scrollViewDidScroll(this);
+            }
         }
     }
 }
@@ -266,7 +279,19 @@ void CCScrollView::setZoomScale(float s)
         const CCPoint offset = ccpSub(center, newCenter);
         if (m_pDelegate != NULL)
         {
-            m_pDelegate->scrollViewDidZoom(this);
+            CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
+            if (pEngine && kScriptTypeJavascript == pEngine->getScriptType())
+            {
+                CCNode* pNode = dynamic_cast<CCNode*>(m_pDelegate);
+                if (pNode)
+                {
+                    pEngine->executeFunctionWithNativeObjectData(1, "onScrollViewDidZoom", this, pNode);
+                }
+            }
+            else
+            {
+                m_pDelegate->scrollViewDidZoom(this);
+            }
         }
         this->setContentOffset(ccpAdd(m_pContainer->getPosition(),offset));
     }
@@ -444,7 +469,19 @@ void CCScrollView::performedAnimatedScroll(float dt)
 
     if (m_pDelegate != NULL)
     {
-        m_pDelegate->scrollViewDidScroll(this);
+        CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
+        if (pEngine && kScriptTypeJavascript == pEngine->getScriptType())
+        {
+            CCNode* pNode = dynamic_cast<CCNode*>(m_pDelegate);
+            if (pNode)
+            {
+                pEngine->executeFunctionWithNativeObjectData(1, "onScrollViewDidScroll", this, pNode);
+            }
+        }
+        else
+        {
+            m_pDelegate->scrollViewDidScroll(this);
+        }
     }
 }
 

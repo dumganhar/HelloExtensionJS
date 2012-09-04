@@ -14,6 +14,9 @@
 #include <vector>
 #include "ScriptingCore.h"
 #include "cocos2d.h"
+#include "cocos-ext.h"
+
+USING_NS_CC_EXT;
 
 #ifdef ANDROID
 #include <android/log.h>
@@ -401,11 +404,26 @@ int ScriptingCore::executeFunctionWithIntegerData(int nHandler, int data, CCNode
     } else if(data == kCCNodeOnExitTransitionDidStart) { executeJSFunctionWithName(this->cx, p->obj, "onExitTransitionDidStart", dataVal, retval);
     }
     
-    
-    
     return 1;
 }
 
+int ScriptingCore::executeFunctionWithNativeObjectData(int nHandler, const char *name, CCNode *obj, CCNode *self)
+{
+    js_proxy_t * pSenderProxy;
+    JS_GET_PROXY(pSenderProxy, obj);
+    if (!pSenderProxy) return 0;
+    
+    js_proxy_t * p;
+    JS_GET_PROXY(p, self);
+    if (!p) return 0;
+    
+    jsval retval;
+    jsval dataVal = OBJECT_TO_JSVAL(pSenderProxy->obj);
+    
+    executeJSFunctionWithName(this->cx, p->obj, name, dataVal, retval);
+    
+    return 1;
+}
 
 int ScriptingCore::executeFunctionWithObjectData(int nHandler, const char *name, JSObject *obj, CCNode *self) {
     
@@ -786,7 +804,7 @@ jsval c_string_to_jsval(JSContext* cx, const char* v) {
     return STRING_TO_JSVAL(str);
 }
 
-jsval ccpoint_to_jsval(JSContext* cx, CCPoint& v) {
+jsval ccpoint_to_jsval(JSContext* cx, const CCPoint& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "x", DOUBLE_TO_JSVAL(v.x), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -797,7 +815,7 @@ jsval ccpoint_to_jsval(JSContext* cx, CCPoint& v) {
     return JSVAL_NULL;
 }
 
-jsval ccrect_to_jsval(JSContext* cx, CCRect& v) {
+jsval ccrect_to_jsval(JSContext* cx, const CCRect& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "x", DOUBLE_TO_JSVAL(v.origin.x), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -810,7 +828,7 @@ jsval ccrect_to_jsval(JSContext* cx, CCRect& v) {
     return JSVAL_NULL;
 }
 
-jsval ccsize_to_jsval(JSContext* cx, CCSize& v) {
+jsval ccsize_to_jsval(JSContext* cx, const CCSize& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "width", DOUBLE_TO_JSVAL(v.width), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -832,7 +850,7 @@ jsval ccgridsize_to_jsval(JSContext* cx, ccGridSize& v) {
     return JSVAL_NULL;
 }
 
-jsval cccolor4b_to_jsval(JSContext* cx, ccColor4B& v) {
+jsval cccolor4b_to_jsval(JSContext* cx, const ccColor4B& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "r", INT_TO_JSVAL(v.r), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -845,7 +863,7 @@ jsval cccolor4b_to_jsval(JSContext* cx, ccColor4B& v) {
     return JSVAL_NULL;
 }
 
-jsval cccolor4f_to_jsval(JSContext* cx, ccColor4F& v) {
+jsval cccolor4f_to_jsval(JSContext* cx, const ccColor4F& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "r", DOUBLE_TO_JSVAL(v.r), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
@@ -858,7 +876,7 @@ jsval cccolor4f_to_jsval(JSContext* cx, ccColor4F& v) {
     return JSVAL_NULL;
 }
 
-jsval cccolor3b_to_jsval(JSContext* cx, ccColor3B& v) {
+jsval cccolor3b_to_jsval(JSContext* cx, const ccColor3B& v) {
     JSObject *tmp = JS_NewObject(cx, NULL, NULL, NULL);
     if (!tmp) return JSVAL_NULL;
     JSBool ok = JS_DefineProperty(cx, tmp, "r", INT_TO_JSVAL(v.r), NULL, NULL, JSPROP_ENUMERATE | JSPROP_PERMANENT) &&
