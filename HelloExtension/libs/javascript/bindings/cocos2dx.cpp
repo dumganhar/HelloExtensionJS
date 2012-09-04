@@ -15945,7 +15945,7 @@ void js_register_cocos2dx_CCCallFunc(JSContext *cx, JSObject *global) {
 	js_cocos2dx_CCCallFunc_class->resolve = JS_ResolveStub;
 	js_cocos2dx_CCCallFunc_class->convert = JS_ConvertStub;
 	js_cocos2dx_CCCallFunc_class->finalize = js_cocos2dx_CCCallFunc_finalize;
-	js_cocos2dx_CCCallFunc_class->flags = JSCLASS_HAS_RESERVED_SLOTS(2);
+	js_cocos2dx_CCCallFunc_class->flags = JSCLASS_HAS_RESERVED_SLOTS(3);
 
 	static JSPropertySpec properties[] = {
 		{0, 0, 0, 0, 0}
