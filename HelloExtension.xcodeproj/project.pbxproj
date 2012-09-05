@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A021FF715F7264D00FD338B /* CCControlButtonTest.js in Sources */ = {isa = PBXBuildFile; fileRef = 1A021FF415F7264D00FD338B /* CCControlButtonTest.js */; };
+		1A021FF815F7264D00FD338B /* CCControlScene.js in Sources */ = {isa = PBXBuildFile; fileRef = 1A021FF515F7264D00FD338B /* CCControlScene.js */; };
+		1A021FF915F7264D00FD338B /* CCControlSceneManager.js in Sources */ = {isa = PBXBuildFile; fileRef = 1A021FF615F7264D00FD338B /* CCControlSceneManager.js */; };
+		1A021FFB15F7267E00FD338B /* CCControlButtonTest.js in Resources */ = {isa = PBXBuildFile; fileRef = 1A021FF415F7264D00FD338B /* CCControlButtonTest.js */; };
+		1A021FFC15F7267E00FD338B /* CCControlScene.js in Resources */ = {isa = PBXBuildFile; fileRef = 1A021FF515F7264D00FD338B /* CCControlScene.js */; };
+		1A021FFD15F7267E00FD338B /* CCControlSceneManager.js in Resources */ = {isa = PBXBuildFile; fileRef = 1A021FF615F7264D00FD338B /* CCControlSceneManager.js */; };
+		1A02200015F727B700FD338B /* extensions in Resources */ = {isa = PBXBuildFile; fileRef = 1A021FFE15F727B700FD338B /* extensions */; };
+		1A02200115F727B700FD338B /* Images in Resources */ = {isa = PBXBuildFile; fileRef = 1A021FFF15F727B700FD338B /* Images */; };
 		1A62376715F48FDC00EE3065 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A62376615F48FDC00EE3065 /* QuartzCore.framework */; };
 		1A62376915F48FDC00EE3065 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A62376815F48FDC00EE3065 /* OpenGLES.framework */; };
 		1A62376B15F48FDC00EE3065 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A62376A15F48FDC00EE3065 /* OpenAL.framework */; };
@@ -25,7 +33,6 @@
 		1A62378715F48FDC00EE3065 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A62378615F48FDC00EE3065 /* Icon-Small@2x.png */; };
 		1A62378915F48FDC00EE3065 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A62378815F48FDC00EE3065 /* Icon.png */; };
 		1A62378B15F48FDC00EE3065 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1A62378A15F48FDC00EE3065 /* Icon@2x.png */; };
-		1A62378D15F48FDC00EE3065 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 1A62378C15F48FDC00EE3065 /* iTunesArtwork */; };
 		1A62379315F48FDC00EE3065 /* CCAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62379215F48FDC00EE3065 /* CCAction.cpp */; };
 		1A62379615F48FDC00EE3065 /* CCActionCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62379515F48FDC00EE3065 /* CCActionCamera.cpp */; };
 		1A62379915F48FDC00EE3065 /* CCActionCatmullRom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62379815F48FDC00EE3065 /* CCActionCatmullRom.cpp */; };
@@ -60,7 +67,6 @@
 		1A6237F315F48FDD00EE3065 /* CCGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A6237F215F48FDD00EE3065 /* CCGrabber.cpp */; };
 		1A6237F615F48FDD00EE3065 /* CCGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A6237F515F48FDD00EE3065 /* CCGrid.cpp */; };
 		1A62381415F48FDD00EE3065 /* aabb.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A62381315F48FDD00EE3065 /* aabb.c */; };
-		1A62381615F48FDD00EE3065 /* ChangeLog in Resources */ = {isa = PBXBuildFile; fileRef = 1A62381515F48FDD00EE3065 /* ChangeLog */; };
 		1A62381A15F48FDD00EE3065 /* mat4stack.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A62381915F48FDD00EE3065 /* mat4stack.c */; };
 		1A62381C15F48FDD00EE3065 /* matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A62381B15F48FDD00EE3065 /* matrix.c */; };
 		1A62381E15F48FDD00EE3065 /* mat3.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A62381D15F48FDD00EE3065 /* mat3.c */; };
@@ -159,20 +165,12 @@
 		1A62396215F48FE100EE3065 /* SimpleAudioEngine_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A62396115F48FE100EE3065 /* SimpleAudioEngine_objc.m */; };
 		1A62396615F48FE100EE3065 /* CCPhysicsSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62396515F48FE100EE3065 /* CCPhysicsSprite.cpp */; };
 		1A62396915F48FE100EE3065 /* cocos2d_specifics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62396815F48FE100EE3065 /* cocos2d_specifics.cpp */; };
-		1A62396B15F48FE100EE3065 /* cocos2d_specifics.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 1A62396A15F48FE100EE3065 /* cocos2d_specifics.hpp */; };
 		1A62396D15F48FE200EE3065 /* cocos2dx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62396C15F48FE200EE3065 /* cocos2dx.cpp */; };
-		1A62396F15F48FE200EE3065 /* cocos2dx.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 1A62396E15F48FE200EE3065 /* cocos2dx.hpp */; };
 		1A62397115F48FE200EE3065 /* js_bindings_chipmunk_functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62397015F48FE200EE3065 /* js_bindings_chipmunk_functions.cpp */; };
-		1A62397315F48FE200EE3065 /* js_bindings_chipmunk_functions.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 1A62397215F48FE200EE3065 /* js_bindings_chipmunk_functions.hpp */; };
 		1A62397515F48FE200EE3065 /* js_bindings_chipmunk_manual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62397415F48FE200EE3065 /* js_bindings_chipmunk_manual.cpp */; };
-		1A62397715F48FE200EE3065 /* js_bindings_chipmunk_manual.hpp in Resources */ = {isa = PBXBuildFile; fileRef = 1A62397615F48FE200EE3065 /* js_bindings_chipmunk_manual.hpp */; };
 		1A62397A15F48FE200EE3065 /* js_manual_conversions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62397915F48FE200EE3065 /* js_manual_conversions.cpp */; };
 		1A62397D15F48FE300EE3065 /* ScriptingCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A62397C15F48FE300EE3065 /* ScriptingCore.cpp */; };
-		1A62399215F48FE300EE3065 /* js.msg in Resources */ = {isa = PBXBuildFile; fileRef = 1A62399115F48FE300EE3065 /* js.msg */; };
-		1A62399715F48FE300EE3065 /* jsatom.tbl in Resources */ = {isa = PBXBuildFile; fileRef = 1A62399615F48FE300EE3065 /* jsatom.tbl */; };
-		1A6239A615F48FE300EE3065 /* jsproto.tbl in Resources */ = {isa = PBXBuildFile; fileRef = 1A6239A515F48FE300EE3065 /* jsproto.tbl */; };
 		1A6239C115F48FE400EE3065 /* libjs_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A6239C015F48FE400EE3065 /* libjs_static.a */; };
-		1A6239C315F48FE400EE3065 /* libjs_static.a.desc in Resources */ = {isa = PBXBuildFile; fileRef = 1A6239C215F48FE400EE3065 /* libjs_static.a.desc */; };
 		1A6239E615F48FE400EE3065 /* chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A6239E515F48FE400EE3065 /* chipmunk.c */; };
 		1A6239EA15F48FE400EE3065 /* cpConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A6239E915F48FE400EE3065 /* cpConstraint.c */; };
 		1A6239EC15F48FE400EE3065 /* cpDampedRotarySpring.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A6239EB15F48FE400EE3065 /* cpDampedRotarySpring.c */; };
@@ -231,6 +229,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A021FF415F7264D00FD338B /* CCControlButtonTest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CCControlButtonTest.js; path = Resources/CCControlButtonTest.js; sourceTree = "<group>"; };
+		1A021FF515F7264D00FD338B /* CCControlScene.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CCControlScene.js; path = Resources/CCControlScene.js; sourceTree = "<group>"; };
+		1A021FF615F7264D00FD338B /* CCControlSceneManager.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CCControlSceneManager.js; path = Resources/CCControlSceneManager.js; sourceTree = "<group>"; };
+		1A021FFE15F727B700FD338B /* extensions */ = {isa = PBXFileReference; lastKnownFileType = folder; name = extensions; path = Resources/extensions; sourceTree = "<group>"; };
+		1A021FFF15F727B700FD338B /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Images; path = Resources/Images; sourceTree = "<group>"; };
 		1A62376215F48FDC00EE3065 /* HelloExtension.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloExtension.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A62376615F48FDC00EE3065 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1A62376815F48FDC00EE3065 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -801,6 +804,11 @@
 		1A62377715F48FDC00EE3065 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1A021FFE15F727B700FD338B /* extensions */,
+				1A021FFF15F727B700FD338B /* Images */,
+				1A021FF415F7264D00FD338B /* CCControlButtonTest.js */,
+				1A021FF515F7264D00FD338B /* CCControlScene.js */,
+				1A021FF615F7264D00FD338B /* CCControlSceneManager.js */,
 				1A623A9915F4A62600EE3065 /* green_edit.png */,
 				1A62377815F48FDC00EE3065 /* CloseNormal.png */,
 				1A62377A15F48FDC00EE3065 /* CloseSelected.png */,
@@ -1824,6 +1832,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A021FFB15F7267E00FD338B /* CCControlButtonTest.js in Resources */,
+				1A021FFC15F7267E00FD338B /* CCControlScene.js in Resources */,
+				1A021FFD15F7267E00FD338B /* CCControlSceneManager.js in Resources */,
 				1A623A8C15F49BAB00EE3065 /* helper.js in Resources */,
 				1A62377915F48FDC00EE3065 /* CloseNormal.png in Resources */,
 				1A62377B15F48FDC00EE3065 /* CloseSelected.png in Resources */,
@@ -1835,20 +1846,12 @@
 				1A62378715F48FDC00EE3065 /* Icon-Small@2x.png in Resources */,
 				1A62378915F48FDC00EE3065 /* Icon.png in Resources */,
 				1A62378B15F48FDC00EE3065 /* Icon@2x.png in Resources */,
-				1A62378D15F48FDC00EE3065 /* iTunesArtwork in Resources */,
-				1A62381615F48FDD00EE3065 /* ChangeLog in Resources */,
-				1A62396B15F48FE100EE3065 /* cocos2d_specifics.hpp in Resources */,
-				1A62396F15F48FE200EE3065 /* cocos2dx.hpp in Resources */,
-				1A62397315F48FE200EE3065 /* js_bindings_chipmunk_functions.hpp in Resources */,
-				1A62397715F48FE200EE3065 /* js_bindings_chipmunk_manual.hpp in Resources */,
-				1A62399215F48FE300EE3065 /* js.msg in Resources */,
-				1A62399715F48FE300EE3065 /* jsatom.tbl in Resources */,
-				1A6239A615F48FE300EE3065 /* jsproto.tbl in Resources */,
-				1A6239C315F48FE400EE3065 /* libjs_static.a.desc in Resources */,
 				1A623A3215F48FE500EE3065 /* hello.js in Resources */,
 				1A623A3415F48FE500EE3065 /* menu1.png in Resources */,
 				1A623A3615F48FE500EE3065 /* menu2.png in Resources */,
 				1A623A9A15F4A62600EE3065 /* green_edit.png in Resources */,
+				1A02200015F727B700FD338B /* extensions in Resources */,
+				1A02200115F727B700FD338B /* Images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2046,6 +2049,9 @@
 				1A623A8515F491EB00EE3065 /* EditBoxImplIOS.mm in Sources */,
 				1A623A8615F491EB00EE3065 /* CCScrollView.cpp in Sources */,
 				1A623A8B15F4974200EE3065 /* helper.js in Sources */,
+				1A021FF715F7264D00FD338B /* CCControlButtonTest.js in Sources */,
+				1A021FF815F7264D00FD338B /* CCControlScene.js in Sources */,
+				1A021FF915F7264D00FD338B /* CCControlSceneManager.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

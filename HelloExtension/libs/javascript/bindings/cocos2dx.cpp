@@ -47737,9 +47737,9 @@ JSBool js_cocos2dx_CCControlButton_setTitleColorForState(JSContext *cx, uint32_t
 	TEST_NATIVE_OBJECT(cx, cobj)
 
 	if (argc == 2) {
-		ccColor3B arg0;
+		cocos2d::ccColor3B arg0;
 		unsigned int arg1;
-		#pragma warning NO CONVERSION TO NATIVE FOR ccColor3B;
+		arg0 = jsval_to_cccolor3b(cx, argv[0]);
 		JS_ValueToECMAUint32(cx, argv[1], &arg1);
 		cobj->setTitleColorForState(arg0, arg1);
 		return JS_TRUE;

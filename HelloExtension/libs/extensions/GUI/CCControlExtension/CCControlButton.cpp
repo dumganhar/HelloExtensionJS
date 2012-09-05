@@ -319,7 +319,7 @@ const ccColor3B CCControlButton::getTitleColorForState(CCControlState state)
     return returnColor;
 }
 
-void CCControlButton::setTitleColorForState(ccColor3B color, CCControlState state)
+void CCControlButton::setTitleColorForState(const ccColor3B& color, CCControlState state)
 {
     //ccColor3B* colorValue=&color;
     m_titleColorDispatchTable->removeObjectForKey(state); 

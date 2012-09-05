@@ -51,6 +51,29 @@ JSObject* bind_menu_item(JSContext *cx, T* nativeObj, jsval callback, jsval this
 	}
 }
 
+template<class T>
+JSObject* bind_callback_function(JSContext *cx, T* nativeObj, jsval callback, jsval thisObj) {
+	js_proxy_t *p;
+	JS_GET_PROXY(p, nativeObj);
+	if (p) {
+        
+		addCallBackAndThis(p->obj, callback, thisObj);
+		return p->obj;
+	} else {
+		js_type_class_t *classType = js_get_type_from_native<T>(nativeObj);
+		assert(classType);
+		JSObject *tmp = JS_NewObject(cx, classType->jsclass, classType->proto, classType->parentProto);
+        
+		// bind nativeObj <-> JSObject
+		js_proxy_t *proxy;
+		JS_NEW_PROXY(proxy, nativeObj, tmp);
+		JS_AddNamedObjectRoot(cx, &proxy->obj, "Callback");
+		addCallBackAndThis(tmp, callback, thisObj);
+        
+		return tmp;
+	}
+}
+
 JSBool js_cocos2dx_CCNode_getChildren(JSContext *cx, uint32_t argc, jsval *vp)
 {
 	JSObject *thisObj = JS_THIS_OBJECT(cx, vp);

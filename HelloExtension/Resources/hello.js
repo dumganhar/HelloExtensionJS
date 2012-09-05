@@ -1,4 +1,5 @@
 require("helper.js");
+require("CCControlSceneManager.js");
 
 // 校正滑动动画速度
 var ADJUST_ANIM_VELOCITY = 800;
@@ -62,8 +63,10 @@ var HelloWorld = cc.LayerGradient.extend({
         var btn = cc.ControlButton.create(scale9Sp);
         btn.setPreferredSize(cc.size(200, 50));
         btn.setPosition(cc.p(winSize.width/2, 50));
-        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
-        /*
+
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchUpInside);
+        /*btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
+        
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragInside);
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragOutside);
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragEnter);
@@ -84,7 +87,11 @@ var HelloWorld = cc.LayerGradient.extend({
     
     touchEventCallback: function(sender, event) {
         cc.log("touchEventCallback... " + sender + " "+event);
-        sender.removeTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
+        //sender.removeTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
+
+        var pManager = ControlSceneManager.getInstance();
+        var pScene = pManager.currentControlScene();
+        cc.Director.getInstance().replaceScene(pScene);
     },
 
     menu1Callback: function() {

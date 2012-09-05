@@ -166,7 +166,7 @@ public:
     * @param state The state that uses the specified color. The values are described
     * in "CCControlState".
     */
-    virtual void setTitleColorForState(ccColor3B color, CCControlState state);
+    virtual void setTitleColorForState(const ccColor3B& color, CCControlState state);
 
     /**
     * Returns the title label used for a state.

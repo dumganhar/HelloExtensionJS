@@ -451,4 +451,10 @@ cc.ControlEventTouchUpOutside      = 1 << 6;    // A touch-up event in the contr
 cc.ControlEventTouchCancel         = 1 << 7;    // A system event canceling the current touches for the control.
 cc.ControlEventValueChanged        = 1 << 8;    // A touch dragging or otherwise manipulating a control, causing it to emit a series of different values.
 
+/** The possible state for a control.  */
+cc.ControlStateNormal       = 1 << 0; // The normal, or default state of a controlóthat is, enabled but neither selected nor highlighted.
+cc.ControlStateHighlighted  = 1 << 1; // Highlighted state of a control. A control enters this state when a touch down, drag inside or drag enter is performed. You can retrieve and set this value through the highlighted property.
+cc.ControlStateDisabled     = 1 << 2; // Disabled state of a control. This state indicates that the control is currently disabled. You can retrieve and set this value through the enabled property.
+cc.ControlStateSelected     = 1 << 3;  // Selected state of a control. This state indicates that the control is currently selected. You can retrieve and set this value through the selected property.
+cc.ControlStateInitial      = 1 << 3;
 
