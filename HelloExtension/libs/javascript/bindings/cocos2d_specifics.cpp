@@ -394,7 +394,7 @@ JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, 
         JS_GET_NATIVE_PROXY(proxy, jsTargetObj);
         cocos2d::CCObject* pTarget = (cocos2d::CCObject*)(proxy ? proxy->ptr : NULL);
         
-        item->addTargetWithActionForControlEvent(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+        item->addTargetWithActionForControlEvents(pTarget, NULL, JSVAL_TO_INT(argv[2]));
         bind_menu_item<cocos2d::extension::CCControl>(cx, item, argv[1], argv[0]);
         return JS_TRUE;
     }
@@ -423,10 +423,14 @@ JSBool js_cocos2dx_CCControl_removeTargetWithActionForControlEvents(JSContext *c
         jsval funcInReservedSpot = JS_GetReservedSlot(obj, 0);
         if (jsFuncObj == JSVAL_TO_OBJECT(funcInReservedSpot) && jsTargetObj == JSVAL_TO_OBJECT(thisObjInReservedSpot))
         {
-            item->removeTargetWithActionForControlEvent(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+            item->removeTargetWithActionForControlEvents(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+            return JS_TRUE;
         }
-        
-        return JS_TRUE;
+        else
+        {
+            JS_ReportError(cx, "In cc.Control.RemoveTargetWithActionForControlEvents, target and callback function aren't matched !");
+            return JS_FALSE;
+        }
     }
     JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 3);
     return JS_FALSE;
