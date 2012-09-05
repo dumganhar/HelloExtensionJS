@@ -49,7 +49,7 @@ var HelloWorld = cc.LayerGradient.extend({
         var sp = cc.Sprite.create("HelloWorld.png");
         sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
         layer.addChild(sp);
-        
+        */
         var scale9Sp = cc.Scale9Sprite.create("green_edit.png");
         //scale9Sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
         //scale9Sp.setPreferredSize(cc.size(200, 50));
@@ -61,9 +61,20 @@ var HelloWorld = cc.LayerGradient.extend({
         
         var btn = cc.ControlButton.create(scale9Sp);
         btn.setPreferredSize(cc.size(200, 50));
-        btn.setPosition(cc.p(winSize.width/2, winSize.height/2));
-        layer.addChild(btn);
+        btn.setPosition(cc.p(winSize.width/2, 50));
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
+        /*
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragInside);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragOutside);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragEnter);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDragExit);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchUpInside);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchUpOutside);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchCancel);
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventValueChanged);*/
+        this.addChild(btn);
         
+        /*
         var lab = "Houston we have liftoff!";
         var label = cc.LabelTTF.create(lab, "Arial", 28);
         layer.addChild(label, 1);
@@ -71,6 +82,11 @@ var HelloWorld = cc.LayerGradient.extend({
         */
     },
     
+    touchEventCallback: function(sender, event) {
+        cc.log("touchEventCallback... " + sender + " "+event);
+        sender.removeTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
+    },
+
     menu1Callback: function() {
         cc.log("menu1Callback");
     },

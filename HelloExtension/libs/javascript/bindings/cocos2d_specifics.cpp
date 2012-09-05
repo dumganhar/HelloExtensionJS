@@ -1,4 +1,5 @@
 #include "cocos2d.h"
+#include "cocos-ext.h"
 #include "cocos2d_specifics.hpp"
 #include <typeinfo>
 
@@ -374,12 +375,62 @@ JSBool js_cocos2dx_setCallback(JSContext *cx, uint32_t argc, jsval *vp) {
         JS_GET_NATIVE_PROXY(proxy, obj);
         cocos2d::CCMenuItem* item = (cocos2d::CCMenuItem*)(proxy ? proxy->ptr : NULL);
         TEST_NATIVE_OBJECT(cx, item)
-        bind_menu_item(cx, item, argv[1], argv[0]);
+        bind_menu_item<cocos2d::CCMenuItem>(cx, item, argv[1], argv[0]);
         return JS_TRUE;
     }
     return JS_FALSE;
 }
 
+JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, uint32_t argc, jsval *vp) {
+    
+    if(argc == 3) {
+        jsval *argv = JS_ARGV(cx, vp);
+        JSObject *obj = JS_THIS_OBJECT(cx, vp);
+        js_proxy_t *proxy;
+        JS_GET_NATIVE_PROXY(proxy, obj);
+        cocos2d::extension::CCControl* item = (cocos2d::extension::CCControl*)(proxy ? proxy->ptr : NULL);
+        TEST_NATIVE_OBJECT(cx, item)
+        JSObject* jsTargetObj = JSVAL_TO_OBJECT(argv[0]);
+        JS_GET_NATIVE_PROXY(proxy, jsTargetObj);
+        cocos2d::CCObject* pTarget = (cocos2d::CCObject*)(proxy ? proxy->ptr : NULL);
+        
+        item->addTargetWithActionForControlEvent(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+        bind_menu_item<cocos2d::extension::CCControl>(cx, item, argv[1], argv[0]);
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 3);
+    return JS_FALSE;
+}
+
+JSBool js_cocos2dx_CCControl_removeTargetWithActionForControlEvents(JSContext *cx, uint32_t argc, jsval *vp) {
+
+    if(argc == 3) {
+        jsval *argv = JS_ARGV(cx, vp);
+        JSObject *obj = JS_THIS_OBJECT(cx, vp);
+        js_proxy_t *proxy;
+        JS_GET_NATIVE_PROXY(proxy, obj);
+        cocos2d::extension::CCControl* item = (cocos2d::extension::CCControl*)(proxy ? proxy->ptr : NULL);
+        TEST_NATIVE_OBJECT(cx, item)
+        JSObject* jsTargetObj = JSVAL_TO_OBJECT(argv[0]);
+        JS_GET_NATIVE_PROXY(proxy, jsTargetObj); // get target proxy
+        
+        cocos2d::CCObject* pTarget = (cocos2d::CCObject*)(proxy ? proxy->ptr : NULL);
+        jsval thisObjInReservedSpot = JS_GetReservedSlot(obj, 1);
+        
+        JSObject* jsFuncObj = JSVAL_TO_OBJECT(argv[1]);
+
+        // whether the function matchs which kept in reserved spot.
+        jsval funcInReservedSpot = JS_GetReservedSlot(obj, 0);
+        if (jsFuncObj == JSVAL_TO_OBJECT(funcInReservedSpot) && jsTargetObj == JSVAL_TO_OBJECT(thisObjInReservedSpot))
+        {
+            item->removeTargetWithActionForControlEvent(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+        }
+        
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 3);
+    return JS_FALSE;
+}
 
 JSBool js_cocos2dx_CCAnimation_create(JSContext *cx, uint32_t argc, jsval *vp)
 {
@@ -639,6 +690,7 @@ extern JSObject* js_cocos2dx_CCAnimation_prototype;
 extern JSObject* js_cocos2dx_CCMenuItem_prototype;
 extern JSObject* js_cocos2dx_CCSpriteFrame_prototype;
 extern JSObject* js_cocos2dx_CCSet_prototype;
+extern JSObject* js_cocos2dx_CCControl_prototype;
 
 void register_cocos2dx_js_extensions(JSContext* cx, JSObject* global)
 {
@@ -671,6 +723,9 @@ void register_cocos2dx_js_extensions(JSContext* cx, JSObject* global)
 	JS_DefineFunction(cx, js_cocos2dx_CCSpriteFrame_prototype, "retain", js_cocos2dx_retain, 0, JSPROP_READONLY | JSPROP_PERMANENT);
 	JS_DefineFunction(cx, js_cocos2dx_CCSpriteFrame_prototype, "release", js_cocos2dx_release, 0, JSPROP_READONLY | JSPROP_PERMANENT);
 	JS_DefineFunction(cx, js_cocos2dx_CCMenuItem_prototype, "setCallback", js_cocos2dx_setCallback, 2, JSPROP_READONLY | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, js_cocos2dx_CCControl_prototype, "addTargetWithActionForControlEvents", js_cocos2dx_CCControl_addTargetWithActionForControlEvents, 3, JSPROP_READONLY | JSPROP_PERMANENT);
+    JS_DefineFunction(cx, js_cocos2dx_CCControl_prototype, "removeTargetWithActionForControlEvents", js_cocos2dx_CCControl_removeTargetWithActionForControlEvents, 3, JSPROP_READONLY | JSPROP_PERMANENT);
+    
 	tmpObj = JSVAL_TO_OBJECT(anonEvaluate(cx, global, "(function () { return cc.Node.prototype; })()"));
 	JS_DefineFunction(cx, tmpObj, "copy", js_cocos2dx_CCNode_copy, 1, JSPROP_READONLY | JSPROP_PERMANENT);
 	tmpObj = JSVAL_TO_OBJECT(anonEvaluate(cx, global, "(function () { return cc.Menu; })()"));

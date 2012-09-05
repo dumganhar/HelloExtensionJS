@@ -95,6 +95,7 @@ public:
 	virtual int executeFunctionByHandler(int nHandler, int numArgs = 0) { return 0; }
     virtual int executeFunctionWithIntegerData(int nHandler, int data, CCNode *self);
     virtual int executeFunctionWithNativeObjectData(int nHandler, const char *name, CCNode *obj, CCNode *self);
+    virtual int executeFunctionWithIntegerData(int nHandler, int data, void** argv, unsigned int argc);
     int executeFunctionWithObjectData(int nHandler, const char *name, JSObject *obj, CCNode *self);
     virtual int executeFunctionWithFloatData(int nHandler, float data, CCNode *self);
     virtual int executeFunctionWithBooleanData(int nHandler, bool data) { return 0; }

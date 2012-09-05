@@ -17,6 +17,10 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
+enum {
+    kInvocationBeInvoked = 1000,
+};
+
 typedef unsigned int CCControlEvent;
 
 typedef void (cocos2d::CCObject::*SEL_CCControlHandler)(cocos2d::CCObject*, CCControlEvent);

@@ -185,6 +185,7 @@ public:
     
     virtual int executeFunctionWithNativeObjectData(int nHandler, const char *name, CCNode *obj, CCNode *self) = 0;
     virtual int executeFunctionWithIntegerData(int nHandler, int data, CCNode *self) = 0;
+    virtual int executeFunctionWithIntegerData(int nHandler, int data, void** argv, unsigned int argc) = 0;
     virtual int executeTouchesEvent(int nHandler, int eventType, CCSet *pTouches, CCNode *self) = 0;
     virtual int executeFunctionWithFloatData(int nHandler, float data, CCNode *self) = 0;
     

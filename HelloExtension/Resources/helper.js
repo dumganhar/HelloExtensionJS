@@ -441,3 +441,14 @@ cc.ScrollViewDirectionVertical   = 1;
 cc.ScrollViewDirectionBoth       = 2;
 
 
+cc.ControlEventTouchDown           = 1 << 0;    // A touch-down event in the control.
+cc.ControlEventTouchDragInside     = 1 << 1;    // An event where a finger is dragged inside the bounds of the control.
+cc.ControlEventTouchDragOutside    = 1 << 2;    // An event where a finger is dragged just outside the bounds of the control. 
+cc.ControlEventTouchDragEnter      = 1 << 3;    // An event where a finger is dragged into the bounds of the control.
+cc.ControlEventTouchDragExit       = 1 << 4;    // An event where a finger is dragged from within a control to outside its bounds.
+cc.ControlEventTouchUpInside       = 1 << 5;    // A touch-up event in the control where the finger is inside the bounds of the control. 
+cc.ControlEventTouchUpOutside      = 1 << 6;    // A touch-up event in the control where the finger is outside the bounds of the control.
+cc.ControlEventTouchCancel         = 1 << 7;    // A system event canceling the current touches for the control.
+cc.ControlEventValueChanged        = 1 << 8;    // A touch dragging or otherwise manipulating a control, causing it to emit a series of different values.
+
+
