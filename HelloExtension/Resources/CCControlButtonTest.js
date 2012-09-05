@@ -126,7 +126,8 @@ var ControlButtonTest_Event = ControlScene.extend({
         
         // Sets up event handlers
         controlButton.addTargetWithActionForControlEvents(this, this.touchDownAction, cc.ControlEventTouchDown);
-        controlButton.addTargetWithActionForControlEvents(this, this.touchDragInsideAction, cc.ControlEventTouchDragInside);
+        controlButton.removeTargetWithActionForControlEvents(this, this.touchDownAction, cc.ControlEventTouchDown);
+        controlButton.addTargetWithActionForControlEvents(this, this.touchDownAction, cc.ControlEventTouchDragInside);
         controlButton.addTargetWithActionForControlEvents(this, this.touchDragOutsideAction, cc.ControlEventTouchDragOutside);
         controlButton.addTargetWithActionForControlEvents(this, this.touchDragEnterAction, cc.ControlEventTouchDragEnter);
         controlButton.addTargetWithActionForControlEvents(this, this.touchDragExitAction, cc.ControlEventTouchDragExit);
@@ -136,42 +137,42 @@ var ControlButtonTest_Event = ControlScene.extend({
     },
 
     touchDownAction: function(sender, controlEvent) {
-        cc.log("touchDownAction");
+        cc.log("touchDownAction "+sender+controlEvent);
         m_pDisplayValueLabel.setString("Touch Down");
     },
 
     touchDragInsideAction: function(sender, controlEvent) {
-        cc.log("touchDragInsideAction");
+        cc.log("touchDragInsideAction"+sender);
         m_pDisplayValueLabel.setString("Drag Inside");
     },
 
     touchDragOutsideAction: function(sender, controlEvent) {
-        cc.log("touchDragOutsideAction");
+        cc.log("touchDragOutsideAction"+sender);
         m_pDisplayValueLabel.setString("Drag Outside");
     },
 
     touchDragEnterAction: function(sender, controlEvent) {
-        cc.log("touchDragEnterAction");
+        cc.log("touchDragEnterAction"+sender);
         m_pDisplayValueLabel.setString("Drag Enter");
     },
 
     touchDragExitAction: function(sender, controlEvent) {
-        cc.log("touchDragExitAction");
+        cc.log("touchDragExitAction"+sender);
         m_pDisplayValueLabel.setString("Drag Exit");
     },
 
     touchUpInsideAction: function(sender, controlEvent) {
-        cc.log("touchUpInsideAction");
+        cc.log("touchUpInsideAction"+sender);
         m_pDisplayValueLabel.setString("Touch Up Inside.");
     },
 
     touchUpOutsideAction: function(sender, controlEvent) {
-        cc.log("touchUpOutsideAction");
+        cc.log("touchUpOutsideAction"+sender);
         m_pDisplayValueLabel.setString("Touch Up Outside.");
     },
 
     touchCancelAction: function(sender, controlEvent) {
-        cc.log("touchCancelAction");
+        cc.log("touchCancelAction"+sender);
         m_pDisplayValueLabel.setString("Touch Cancel");
     }
 });

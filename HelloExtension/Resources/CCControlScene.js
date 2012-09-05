@@ -82,14 +82,20 @@ var ControlScene = cc.Layer.extend({
 
     previousCallback: function (sender) {
         cc.Director.getInstance().replaceScene(ControlSceneManager.getInstance().previousControlScene());
+        __jsc__.dumpRoot();
+        __jsc__.garbageCollect();
     },
 
     restartCallback: function (sender) {
         cc.Director.getInstance().replaceScene(ControlSceneManager.getInstance().currentControlScene());
+        __jsc__.dumpRoot();
+        __jsc__.garbageCollect();
     },
 
     nextCallback: function (sender) {
         cc.Director.getInstance().replaceScene(ControlSceneManager.getInstance().nextControlScene());
+        __jsc__.dumpRoot();
+        __jsc__.garbageCollect();
     }
 
 });

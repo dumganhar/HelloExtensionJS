@@ -17,7 +17,7 @@ void CCInvocation::invoke(CCObject* sender)
     {
         (m_target->*m_action)(sender, m_controlEvent);
     }
-    
+    /*
     CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()->getScriptEngine();
     if (pEngine && kScriptTypeJavascript == pEngine->getScriptType())
     {
@@ -29,6 +29,7 @@ void CCInvocation::invoke(CCObject* sender)
             pEngine->executeFunctionWithIntegerData(1, kInvocationBeInvoked, argv, 2);
         }
     }
+     */
 }
 
 NS_CC_EXT_END

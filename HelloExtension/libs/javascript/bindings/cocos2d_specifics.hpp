@@ -155,6 +155,21 @@ class JSTouchDelegate: public CCTouchDelegate, public CCNode {
         JSObject *_mObj;    
 };
 
+struct js_callback_proxy;
+typedef struct js_callback_proxy js_callback_proxy_t;
+
+class JSCallbackTarget : public CCObject
+{
+public:
+    JSCallbackTarget();
+    virtual ~JSCallbackTarget();
+    void setJSProxy(js_callback_proxy_t* proxy);
+    void onControlEventReceived(CCObject* pSender, CCControlEvent event);
+    void onScheduleUpdate(float dt);
+    
+private:
+    js_callback_proxy_t* m_pProxy;
+};
 
 
 #endif

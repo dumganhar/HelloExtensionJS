@@ -11,6 +11,7 @@
 
 #include <assert.h>
 #include "cocos2d.h"
+#include "cocos-ext.h"
 #include "uthash.h"
 #include "jsapi.h"
 #include "jsfriendapi.h"
@@ -19,6 +20,7 @@
 void js_log(const char *format, ...);
 
 using namespace cocos2d;
+USING_NS_CC_EXT;
 
 typedef void (*sc_register_sth)(JSContext* cx, JSObject* global);
 

@@ -3,6 +3,44 @@
 #include "cocos2d_specifics.hpp"
 #include <typeinfo>
 
+struct js_callback_proxy
+{
+    CCObject* nativeTargetObj;    /* use native object as hash key because it's unique */
+    JSObject* jsTargetObj;        /* js this object */
+    JSObject* jsFuncObj;          /* js callback function */
+    void*     nativeThisObj;
+    void*     data;
+    UT_hash_handle hh; /* makes this class hashable */
+};
+
+static js_callback_proxy_t* _native_js_callback_global_ht = NULL;
+
+#define JS_CALLBACK_NEW_PROXY(p, native_target_obj, js_target_obj, js_func_obj, js_this_obj, arg) \
+do { \
+    p = (js_callback_proxy_t *)malloc(sizeof(js_callback_proxy_t)); \
+    assert(p); \
+    p->nativeTargetObj = (native_target_obj); \
+    p->jsTargetObj = (js_target_obj); \
+    p->jsFuncObj = (js_func_obj); \
+    p->nativeThisObj = (js_this_obj); \
+    p->data = (void*)(arg); \
+    HASH_ADD_PTR(_native_js_callback_global_ht, nativeTargetObj, p); \
+} while(0) \
+
+#define JS_CALLBACK_GET_PROXY(p, nativeTargetObj) \
+    do { \
+    HASH_FIND_PTR(_native_js_callback_global_ht, &(nativeTargetObj), p); \
+} while (0)
+
+#define JSCALLBACK_FOREACH(__el__) \
+    js_callback_proxy_t* pTmp##__el__ = NULL; \
+    HASH_ITER(hh, _native_js_callback_global_ht, __el__, pTmp##__el__)
+
+#define JS_CALLBACK_REMOVE_PROXY(nproxy) \
+do { \
+    if (nproxy)  { HASH_DEL(_native_js_callback_global_ht, nproxy); free(nproxy); } \
+} while (0)
+
 void JSTouchDelegate::setJSObject(JSObject *obj) {
     _mObj = obj;
 }
@@ -30,7 +68,7 @@ static void addCallBackAndThis(JSObject *obj, jsval callback, jsval &thisObj) {
 }
 
 template<class T>
-JSObject* bind_menu_item(JSContext *cx, T* nativeObj, jsval callback, jsval thisObj) {    
+JSObject* bind_menu_item(JSContext *cx, T* nativeObj, jsval callback, jsval thisObj) {
 	js_proxy_t *p;
 	JS_GET_PROXY(p, nativeObj);
 	if (p) {
@@ -51,28 +89,6 @@ JSObject* bind_menu_item(JSContext *cx, T* nativeObj, jsval callback, jsval this
 	}
 }
 
-template<class T>
-JSObject* bind_callback_function(JSContext *cx, T* nativeObj, jsval callback, jsval thisObj) {
-	js_proxy_t *p;
-	JS_GET_PROXY(p, nativeObj);
-	if (p) {
-        
-		addCallBackAndThis(p->obj, callback, thisObj);
-		return p->obj;
-	} else {
-		js_type_class_t *classType = js_get_type_from_native<T>(nativeObj);
-		assert(classType);
-		JSObject *tmp = JS_NewObject(cx, classType->jsclass, classType->proto, classType->parentProto);
-        
-		// bind nativeObj <-> JSObject
-		js_proxy_t *proxy;
-		JS_NEW_PROXY(proxy, nativeObj, tmp);
-		JS_AddNamedObjectRoot(cx, &proxy->obj, "Callback");
-		addCallBackAndThis(tmp, callback, thisObj);
-        
-		return tmp;
-	}
-}
 
 JSBool js_cocos2dx_CCNode_getChildren(JSContext *cx, uint32_t argc, jsval *vp)
 {
@@ -404,8 +420,22 @@ JSBool js_cocos2dx_setCallback(JSContext *cx, uint32_t argc, jsval *vp) {
     return JS_FALSE;
 }
 
+static bool is_target_function_exist(JSObject* obj, JSObject* func, void* nativeThisObj, void* data, js_callback_proxy_t** found)
+{
+    js_callback_proxy_t* pElement = NULL;
+    JSCALLBACK_FOREACH(pElement)
+    {
+        if (pElement->jsTargetObj == obj && pElement->jsFuncObj == func && pElement->nativeThisObj == nativeThisObj && pElement->data == data)
+        {
+            *found = pElement;
+            return true;
+        }
+    }
+    return false;
+}
+
 JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, uint32_t argc, jsval *vp) {
-    
+
     if(argc == 3) {
         jsval *argv = JS_ARGV(cx, vp);
         JSObject *obj = JS_THIS_OBJECT(cx, vp);
@@ -414,11 +444,25 @@ JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, 
         cocos2d::extension::CCControl* item = (cocos2d::extension::CCControl*)(proxy ? proxy->ptr : NULL);
         TEST_NATIVE_OBJECT(cx, item)
         JSObject* jsTargetObj = JSVAL_TO_OBJECT(argv[0]);
-        JS_GET_NATIVE_PROXY(proxy, jsTargetObj);
-        cocos2d::CCObject* pTarget = (cocos2d::CCObject*)(proxy ? proxy->ptr : NULL);
+        JSObject* jsFuncObj = JSVAL_TO_OBJECT(argv[1]);
+        int event = JSVAL_TO_INT(argv[2]);
         
-        item->addTargetWithActionForControlEvents(pTarget, NULL, JSVAL_TO_INT(argv[2]));
-        bind_menu_item<cocos2d::extension::CCControl>(cx, item, argv[1], argv[0]);
+        js_callback_proxy_t* found = NULL;
+        if (is_target_function_exist(jsTargetObj, jsFuncObj, (void*)item, (void*)event, &found))
+        {
+            item->removeTargetWithActionForControlEvents(found->nativeTargetObj, cccontrol_selector(JSCallbackTarget::onControlEventReceived), event);
+            JS_CALLBACK_REMOVE_PROXY(found);
+            CCLOG("In add Target: target exists, remove it!");
+        }
+        
+        JSCallbackTarget* pTarget = new JSCallbackTarget();
+        item->addTargetWithActionForControlEvents(pTarget, cccontrol_selector(JSCallbackTarget::onControlEventReceived), event);
+        js_callback_proxy_t* p;
+        JS_CALLBACK_NEW_PROXY(p, pTarget, jsTargetObj, jsFuncObj, item, event);
+        JS_AddNamedObjectRoot(cx, &jsTargetObj, "cccontrol target object");
+        JS_AddNamedObjectRoot(cx, &jsFuncObj, "cccontrol jsFuncObj object");
+
+        pTarget->setJSProxy(p);
         return JS_TRUE;
     }
     JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 3);
@@ -435,18 +479,15 @@ JSBool js_cocos2dx_CCControl_removeTargetWithActionForControlEvents(JSContext *c
         cocos2d::extension::CCControl* item = (cocos2d::extension::CCControl*)(proxy ? proxy->ptr : NULL);
         TEST_NATIVE_OBJECT(cx, item)
         JSObject* jsTargetObj = JSVAL_TO_OBJECT(argv[0]);
-        JS_GET_NATIVE_PROXY(proxy, jsTargetObj); // get target proxy
-        
-        cocos2d::CCObject* pTarget = (cocos2d::CCObject*)(proxy ? proxy->ptr : NULL);
-        jsval thisObjInReservedSpot = JS_GetReservedSlot(obj, 1);
-        
         JSObject* jsFuncObj = JSVAL_TO_OBJECT(argv[1]);
+        int event = JSVAL_TO_INT(argv[2]);
 
-        // whether the function matchs which kept in reserved spot.
-        jsval funcInReservedSpot = JS_GetReservedSlot(obj, 0);
-        if (jsFuncObj == JSVAL_TO_OBJECT(funcInReservedSpot) && jsTargetObj == JSVAL_TO_OBJECT(thisObjInReservedSpot))
+        js_callback_proxy_t* found = NULL;
+        if (is_target_function_exist(jsTargetObj, jsFuncObj, (void*)item, (void*)event, &found))
         {
-            item->removeTargetWithActionForControlEvents(pTarget, NULL, JSVAL_TO_INT(argv[2]));
+            item->removeTargetWithActionForControlEvents(found->nativeTargetObj, cccontrol_selector(JSCallbackTarget::onControlEventReceived), event);
+            JS_CALLBACK_REMOVE_PROXY(found);
+            CCLOG("In remove Target: target exists, remove it!");
             return JS_TRUE;
         }
         else
@@ -791,4 +832,38 @@ void register_cocos2dx_js_extensions(JSContext* cx, JSObject* global)
     JSFunction *ccSetConstructor = JS_NewFunction(cx, js_cocos2dx_CCSet_constructor, 0, JSPROP_READONLY | JSPROP_PERMANENT, NULL, "constructor");
     JSObject *ctor = JS_GetFunctionObject(ccSetConstructor);
     JS_LinkConstructorAndPrototype(cx, ctor, js_cocos2dx_CCSet_prototype);
+}
+
+JSCallbackTarget::JSCallbackTarget()
+: m_pProxy(NULL)
+{
+    
+}
+
+JSCallbackTarget::~JSCallbackTarget()
+{
+    CCLOG("JSCallbackTarget destroy.");
+}
+
+void JSCallbackTarget::setJSProxy(js_callback_proxy_t* proxy)
+{
+    m_pProxy = proxy;
+}
+
+void JSCallbackTarget::onControlEventReceived(CCObject* pSender, CCControlEvent event)
+{
+    JSContext* cx = ScriptingCore::getInstance()->getGlobalContext();
+    jsval args[2];
+    jsval retval;
+    js_proxy_t* p;
+    JS_GET_PROXY(p, pSender);
+    assert(p);
+    args[0] = OBJECT_TO_JSVAL(p->obj);
+    args[1] = INT_TO_JSVAL(event);
+    JS_CallFunctionValue(cx, m_pProxy->jsTargetObj, OBJECT_TO_JSVAL(m_pProxy->jsFuncObj), 2, args, &retval);
+}
+
+void JSCallbackTarget::onScheduleUpdate(float dt)
+{
+    
 }
