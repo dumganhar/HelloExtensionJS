@@ -435,7 +435,7 @@ static bool is_target_function_exist(JSObject* obj, JSObject* func, void* native
 }
 
 JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, uint32_t argc, jsval *vp) {
-
+return JS_TRUE;
     if(argc == 3) {
         jsval *argv = JS_ARGV(cx, vp);
         JSObject *obj = JS_THIS_OBJECT(cx, vp);
@@ -470,7 +470,7 @@ JSBool js_cocos2dx_CCControl_addTargetWithActionForControlEvents(JSContext *cx, 
 }
 
 JSBool js_cocos2dx_CCControl_removeTargetWithActionForControlEvents(JSContext *cx, uint32_t argc, jsval *vp) {
-
+return JS_TRUE;
     if(argc == 3) {
         jsval *argv = JS_ARGV(cx, vp);
         JSObject *obj = JS_THIS_OBJECT(cx, vp);

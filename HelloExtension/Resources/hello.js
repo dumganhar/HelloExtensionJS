@@ -1,5 +1,5 @@
 require("helper.js");
-require("CCControlSceneManager.js");
+//require("CCControlSceneManager.js");
 
 // 校正滑动动画速度
 var ADJUST_ANIM_VELOCITY = 800;
@@ -37,6 +37,7 @@ var HelloWorld = cc.LayerGradient.extend({
         menu.setPosition(cc.p(0, 0));
         layer.addChild(menu);
 
+        
         scrollView.setPosition(cc.p(0, 0));
         scrollView.setContentOffset(cc.p(0, 0), false);
         layer.setContentSize(cc.size(960, 320));
@@ -46,11 +47,14 @@ var HelloWorld = cc.LayerGradient.extend({
         scrollView.setDelegate(this);
 
         this.addChild(scrollView, 10, 1234);
+        //this.addChild(layer);
+        
         /*
         var sp = cc.Sprite.create("HelloWorld.png");
         sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
         layer.addChild(sp);
         */
+        
         var scale9Sp = cc.Scale9Sprite.create("green_edit.png");
         //scale9Sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
         //scale9Sp.setPreferredSize(cc.size(200, 50));
@@ -59,6 +63,7 @@ var HelloWorld = cc.LayerGradient.extend({
         //var editBox = cc.EditBox.create(cc.size(200, 50), scale9Sp);
         //editBox.setPosition(cc.p(winSize.width/2, winSize.height/2));
         //layer.addChild(editBox);
+        
         
         var btn = cc.ControlButton.create(scale9Sp);
         btn.setPreferredSize(cc.size(200, 50));
@@ -74,9 +79,9 @@ var HelloWorld = cc.LayerGradient.extend({
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchUpInside);
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchUpOutside);
         btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchCancel);
-        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventValueChanged);*/
+        btn.addTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventValueChanged); */
         this.addChild(btn);
-        
+       
         /*
         var lab = "Houston we have liftoff!";
         var label = cc.LabelTTF.create(lab, "Arial", 28);
@@ -89,13 +94,23 @@ var HelloWorld = cc.LayerGradient.extend({
         cc.log("touchEventCallback... " + sender + " "+event);
         //sender.removeTargetWithActionForControlEvents(this, this.touchEventCallback, cc.ControlEventTouchDown);
 
-        var pManager = ControlSceneManager.getInstance();
-        var pScene = pManager.currentControlScene();
-        cc.Director.getInstance().replaceScene(pScene);
+        // var pManager = ControlSceneManager.getInstance();
+        // var pScene = pManager.currentControlScene();
+        // cc.Director.getInstance().replaceScene(pScene);
     },
 
     menu1Callback: function() {
         cc.log("menu1Callback");
+       /* var pManager = ControlSceneManager.getInstance();
+        var pScene = pManager.currentControlScene();
+        cc.Director.getInstance().replaceScene(pScene);*/
+        __jsc__.dumpRoot();
+        __jsc__.garbageCollect();
+       cc.log("menu1Callback 01");
+        run();
+        __jsc__.dumpRoot();
+        __jsc__.garbageCollect();
+         cc.log("menu1Callback 02");
     },
 
     menu2Callback: function() {
@@ -116,6 +131,7 @@ var HelloWorld = cc.LayerGradient.extend({
     },
 
     adjustScrollView: function() {
+        
         // 关闭CCScrollView中的自调整
         scrollView.unscheduleAllSelectors();
         
@@ -140,6 +156,7 @@ var HelloWorld = cc.LayerGradient.extend({
         
         // 调整位置
         scrollView.setContentOffsetInDuration(adjustPos, adjustAnimDelay);
+        
     },
 
     onScrollViewDidScroll: function(sender) {
@@ -169,4 +186,9 @@ try {
 
     director.runWithScene(scene);
 
+    __jsc__.dumpRoot();
+    __jsc__.garbageCollect();
+
 } catch(e) {log(e);}
+
+require("CCControlScene.js");

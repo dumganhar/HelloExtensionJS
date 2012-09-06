@@ -38,7 +38,7 @@ char *_js_log_buf = NULL;
 std::vector<sc_register_sth> registrationList;
 
 static void executeJSFunctionFromReservedSpot(JSContext *cx, JSObject *obj, unsigned int argc,
-                                              jsval *dataVal, jsval &retval) {
+                                              jsval &dataVal, jsval &retval) {
 
     //  if(p->jsclass->JSCLASS_HAS_RESERVED_SLOTS(1)) {
     jsval func = JS_GetReservedSlot(obj, 0);
@@ -46,10 +46,10 @@ static void executeJSFunctionFromReservedSpot(JSContext *cx, JSObject *obj, unsi
     if(func == JSVAL_VOID) { return; }
     jsval thisObj = JS_GetReservedSlot(obj, 1);
     if(thisObj == JSVAL_VOID) {
-        JS_CallFunctionValue(cx, obj, func, argc, dataVal, &retval);
+        JS_CallFunctionValue(cx, obj, func, 1, &dataVal, &retval);
     } else {
         assert(!JSVAL_IS_PRIMITIVE(thisObj));
-        JS_CallFunctionValue(cx, JSVAL_TO_OBJECT(thisObj), func, argc, dataVal, &retval);
+        JS_CallFunctionValue(cx, JSVAL_TO_OBJECT(thisObj), func, 1, &dataVal, &retval);
     }        
     //  }
 }
@@ -200,6 +200,9 @@ JSBool ScriptingCore::evalString(const char *string, jsval *outVal, const char *
 void ScriptingCore::start() {
     // for now just this
     this->createGlobalContext();
+#ifdef DEBUG
+    //JS_SetGCZeal(this->cx, 2, JS_DEFAULT_ZEAL_FREQ);
+#endif
 }
 
 void ScriptingCore::addRegisterCallback(sc_register_sth callback) {
@@ -332,7 +335,21 @@ JSBool ScriptingCore::executeScript(JSContext *cx, uint32_t argc, jsval *vp)
 
 JSBool ScriptingCore::forceGC(JSContext *cx, uint32_t argc, jsval *vp)
 {
-	JSRuntime *rt = JS_GetRuntime(cx);
+    JSRuntime *rt = JS_GetRuntime(cx);
+    /*
+    const char* dumpName = "stdout";
+    FILE* dumpFile = (*dumpName == '\0' ||
+                      strcmp(dumpName, "stdout") == 0)
+    ? stdout
+    : fopen(dumpName, "w");
+    if (dumpFile) {
+        JS_DumpHeap(rt, dumpFile, NULL,
+                    JSTRACE_OBJECT, NULL, static_cast<size_t>(-1), NULL);
+        if (dumpFile != stdout)
+            fclose(dumpFile);
+    }
+    */
+	
 	JS_GC(rt);
 	return JS_TRUE;
 }
@@ -398,7 +415,7 @@ int ScriptingCore::executeFunctionWithIntegerData(int nHandler, int data, CCNode
         executeJSFunctionWithName(this->cx, p->obj, "onExit", dataVal, retval);
     } else if(data == kCCMenuItemActivated) {
         dataVal = (proxy ? OBJECT_TO_JSVAL(proxy->obj) : JSVAL_NULL);
-        executeJSFunctionFromReservedSpot(this->cx, p->obj, 1, &dataVal, retval);
+        executeJSFunctionFromReservedSpot(this->cx, p->obj, 1, dataVal, retval);
     } else if(data == kCCNodeOnEnterTransitionDidFinish) {
         executeJSFunctionWithName(this->cx, p->obj, "onEnterTransitionDidFinish", dataVal, retval);
     } else if(data == kCCNodeOnExitTransitionDidStart) {
@@ -428,16 +445,16 @@ int ScriptingCore::executeFunctionWithNativeObjectData(int nHandler, const char 
 
 int ScriptingCore::executeFunctionWithIntegerData(int nHandler, int data, void** argv, unsigned int argc)
 {
-    jsval retval;
-    if (data == kInvocationBeInvoked) {
-        assert(argc == 2);
-        jsval dataVal[2];
-        js_proxy_t * p;
-        JS_GET_PROXY(p, argv[0]);
-        dataVal[0] = (p ? OBJECT_TO_JSVAL(p->obj) : JSVAL_NULL);
-        dataVal[1] = INT_TO_JSVAL((int)argv[1]);
-        executeJSFunctionFromReservedSpot(this->cx, p->obj, 2, dataVal, retval);
-    }
+//    jsval retval;
+//    if (data == kInvocationBeInvoked) {
+//        assert(argc == 2);
+//        jsval dataVal[2];
+//        js_proxy_t * p;
+//        JS_GET_PROXY(p, argv[0]);
+//        dataVal[0] = (p ? OBJECT_TO_JSVAL(p->obj) : JSVAL_NULL);
+//        dataVal[1] = INT_TO_JSVAL((int)argv[1]);
+//        executeJSFunctionFromReservedSpot(this->cx, p->obj, 2, dataVal, retval);
+//    }
 
     return 1;
 }

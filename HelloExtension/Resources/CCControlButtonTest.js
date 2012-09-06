@@ -38,6 +38,7 @@ var ControlButtonTest_HelloVariableSize = ControlScene.extend({
 
     init: function() {
         this._super();
+        return;
         // Defines an array of title to create buttons dynamically
         var stringArray = ["Hello","Variable","Size","!"];
         
@@ -50,13 +51,14 @@ var ControlButtonTest_HelloVariableSize = ControlScene.extend({
         for (var i = 0; i < stringArray.length; i++)
         {
             // Creates a button with this string as title
+            /*
             var button = this.standardButtonWithTitle(stringArray[i]);
             button.setPosition(cc.p (total_width + button.getContentSize().width / 2, button.getContentSize().height / 2));
             layer.addChild(button);
 
             // Compute the size of the layer
             height = button.getContentSize().height;
-            total_width += button.getContentSize().width;
+            total_width += button.getContentSize().width;*/
         }
 
         layer.setAnchorPoint(cc.p (0.5, 0.5));
@@ -109,7 +111,7 @@ var ControlButtonTest_Event = ControlScene.extend({
         var titleButton = cc.LabelTTF.create("Touch Me!", "Marker Felt", 30);
 
         titleButton.setColor(cc.c3(159, 168, 176));
-        
+        /*
         var controlButton = cc.ControlButton.create(titleButton, backgroundButton);
         controlButton.setBackgroundSpriteForState(backgroundHighlightedButton, cc.ControlStateHighlighted);
         controlButton.setTitleColorForState(cc.WHITE, cc.ControlStateHighlighted);
@@ -117,13 +119,13 @@ var ControlButtonTest_Event = ControlScene.extend({
         controlButton.setAnchorPoint(cc.p(0.5, 1));
         controlButton.setPosition(cc.p(screenSize.width / 2.0, screenSize.height / 2.0));
         this.addChild(controlButton, 1);
-
+        */
         // Add the black background
         var background = cc.Scale9Sprite.create("extensions/buttonBackground.png");
         background.setContentSize(cc.size(300, 170));
         background.setPosition(cc.p(screenSize.width / 2.0, screenSize.height / 2.0));
         this.addChild(background);
-        
+        /*
         // Sets up event handlers
         controlButton.addTargetWithActionForControlEvents(this, this.touchDownAction, cc.ControlEventTouchDown);
         controlButton.removeTargetWithActionForControlEvents(this, this.touchDownAction, cc.ControlEventTouchDown);
@@ -134,6 +136,7 @@ var ControlButtonTest_Event = ControlScene.extend({
         controlButton.addTargetWithActionForControlEvents(this, this.touchUpInsideAction, cc.ControlEventTouchUpInside);
         controlButton.addTargetWithActionForControlEvents(this, this.touchUpOutsideAction, cc.ControlEventTouchUpOutside);
         controlButton.addTargetWithActionForControlEvents(this, this.touchCancelAction, cc.ControlEventTouchCancel);
+        */
     },
 
     touchDownAction: function(sender, controlEvent) {
@@ -190,6 +193,7 @@ var ControlButtonTest_Styling = ControlScene.extend({
         var space = 10; // px
         
         var max_w = 0, max_h = 0;
+        /*
         for (var i = 0; i < 3; i++)
         {
             for (var j = 0; j < 3; j++)
@@ -206,7 +210,7 @@ var ControlButtonTest_Styling = ControlScene.extend({
                 max_h = Math.max(button.getContentSize().height * (j + 1) + space * j, max_h);
             }
         }
-        
+        */
         layer.setAnchorPoint(cc.p (0.5, 0.5));
         layer.setContentSize(cc.size(max_w, max_h));
         layer.setPosition(cc.p(screenSize.width / 2.0, screenSize.height / 2.0));
